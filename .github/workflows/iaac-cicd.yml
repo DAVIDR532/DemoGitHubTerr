@@ -1,0 +1,55 @@
+name: IaaC
+#Triggers (uncomment line below to use it)
+on: [push, workflow_dispatch]
+
+env:
+  RESOURCE-GROUP: RG-ESHOP-DAVIDR
+  LOCATION: eastus
+  TEMPLATE-FILE: .azure/bicep/webapp.bicep
+  SUBSCRIPTION-ID: 60835389-0713-4a20-8115-01a4724a2ab4
+  WEBAPP-NAME: az400-webapp-davidr
+
+jobs:
+
+  build-ci:
+    runs-on: ubuntu-latest
+    steps:
+    #checkout the repository
+    - uses: actions/checkout@v2
+    # upload the bicep template as artifacts for next job
+    - name: Upload artifact for deployment job
+      uses: actions/upload-artifact@v3
+      with:
+        name: bicep-template
+        path: ${{ env.TEMPLATE-FILE }}
+# Use Bicep to deploy infrastructure
+  deploy:
+    runs-on: ubuntu-latest
+    needs: buildandtest
+    environment:
+      name: 'Development'
+    steps:
+
+    #Download the bicep templates from previous job
+    - name: Download artifact from build job
+      uses: actions/download-artifact@v3
+      with:
+        name: bicep-template
+        path: bicep-template
+
+   #Login in your azure subscription using a service principal (credentials stored as GitHub Secret in repo)
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+           
+    # Deploy Azure WebApp using Bicep file
+    - name: deploy
+      uses: azure/arm-deploy@v1
+      with:
+        subscriptionId: ${{ env.SUBSCRIPTION-ID }}
+        resourceGroupName: ${{ env.RESOURCE-GROUP }}
+        template: bicep-template/webapp.bicep
+        parameters: 'webAppName=${{ env.WEBAPP-NAME }} location=${{ env.LOCATION }}'
+        failOnStdErr: false   
+    

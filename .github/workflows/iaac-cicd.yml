@@ -7,7 +7,7 @@ env:
   LOCATION: eastus
   TEMPLATE-FILE: .azure/bicep/webapp.bicep
   SUBSCRIPTION-ID: 60835389-0713-4a20-8115-01a4724a2ab4
-  WEBAPP-NAME: az400-webapp-davidr
+  WEBAPP-NAME: rg-webapp-davidr
 
 jobs:
 
@@ -47,7 +47,7 @@ jobs:
       uses: azure/arm-deploy@v1
       with:
         subscriptionId: ${{ env.SUBSCRIPTION-ID }}
-        resourceGroupName: ${{ env.RESOURCE-GROUP }}
+        #resourceGroupName: ${{ env.RESOURCE-GROUP }}
         template: bicep-template/webapp.bicep
         parameters: 'webAppName=${{ env.WEBAPP-NAME }} location=${{ env.LOCATION }}'
         failOnStdErr: false   

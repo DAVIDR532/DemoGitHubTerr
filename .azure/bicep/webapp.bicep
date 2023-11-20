@@ -8,7 +8,7 @@ var appServicePlanName = toLower('AppServicePlan-${webAppName}')
 param suffix string = uniqueString(resourceGroup().id)
 
 resource acr 'Microsoft.ContainerRegistry/registries@2021-09-01' = {
-  name: 'cr${suffix}'
+  name: 'cr-Demo-DavR'
   location: location
   sku: {
     name: 'Basic'

@@ -48,7 +48,7 @@ jobs:
         azcliversion: 2.30.0
         inlineScript: |
           az account show
-          az group create -n ${{ env.RESOURCE-GROUP }} -l ${{ env.LOCATION }}'
+          az group create -n ${{ env.RESOURCE-GROUP }} -l ${{ env.LOCATION }}
 
     # Deploy Azure WebApp using Bicep file
     - name: deploy

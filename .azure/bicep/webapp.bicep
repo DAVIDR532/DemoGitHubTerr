@@ -1,9 +1,22 @@
 param webAppName string = uniqueString(resourceGroup().id)// Generate unique String for web app name
-param sku string = 'B1' // The SKU of App Service Plan
+param sku string = 'F1' // The SKU of App Service Plan
 param location string = resourceGroup().location
 
 var appServicePlanName = toLower('AppServicePlan-${webAppName}')
 
+@description('Generate a Suffix based on the Resource Group ID')
+param suffix string = uniqueString(resourceGroup().id)
+
+resource acr 'Microsoft.ContainerRegistry/registries@2021-09-01' = {
+  name: 'cr${suffix}'
+  location: location
+  sku: {
+    name: 'Basic'
+  }
+  properties: {
+    adminUserEnabled: false
+  }
+}
 
 resource appServicePlan 'Microsoft.Web/serverfarms@2020-06-01' = {
   name: appServicePlanName

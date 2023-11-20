@@ -4,6 +4,12 @@ param location string = resourceGroup().location
 
 var appServicePlanName = toLower('AppServicePlan-${webAppName}')
 
+resource RG 'Microsoft.Resources/resourceGroups@2022-09-01' = {
+  name: RG-workshop-DAVIDR
+  location: location
+}
+
+
 resource appServicePlan 'Microsoft.Web/serverfarms@2020-06-01' = {
   name: appServicePlanName
   location: location

@@ -3,7 +3,7 @@ name: IaaC
 on: [push, workflow_dispatch]
 
 env:
-  RESOURCE-GROUP: RG-ESHOP-DAVIDR
+  RESOURCE-GROUP: RG-workshop-DAVIDR
   LOCATION: eastus
   TEMPLATE-FILE: .azure/bicep/webapp.bicep
   SUBSCRIPTION-ID: 60835389-0713-4a20-8115-01a4724a2ab4
